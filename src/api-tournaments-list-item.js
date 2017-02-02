@@ -19,15 +19,10 @@ class ApiTournamentsListItem extends Component {
 		
 		this.state = {
 			tournament: props.tournament,
-			checked: false
+			checked: props.isFavorite
 		};
-
+		
 		this.handleChange = this.handleChange.bind(this);
-	}
-
-	componentDidMount() {
-
-		//if (this.state.tournament.id == )
 	}
 
 	handleChange() {

@@ -19,13 +19,12 @@ class ApiTournamentsList extends Component {
 		
 		this.state = {
 			apiTournaments: [],
-			favoriteTournaments: []
+			favoriteTournaments: [],
+			fetchCount: 0 // This will be 2 when api fetch and firebase fetch are done
 		};
 	}
 
 	componentWillMount() {
-
-		var fetchCount = 0; // This will be 2 when api fetch and firebase fetch are done
 
 		// Get the tournaments from the API
 		fetch('http://api.football-data.org/v1/competitions', { 
@@ -37,29 +36,22 @@ class ApiTournamentsList extends Component {
 			return response.json()
 		})
 		.then((data) => {
-			this.setState({ apiTournaments: data })
-			fetchCount++;
-			if (fetchCount === 2) this.checkFavoriteTournaments()
-			console.log("ApiTournamentsList", this.state.apiTournaments)
+			this.setState({
+				apiTournaments: data,
+				fetchCount: this.state.fetchCount+1
+			})
 		})
 
 		// Get my favorite tournaments from Firebase
 		base.fetch('favoriteTournaments', {
 			context: this,
-			asArray: true
-		})
-		.then((response) => {
-			//console.log("response", response);
-			var resp = JSON.stringify(response)
-			//var resp = resp["426"]
-			console.log("response", resp)
-			return response.json()
+			asArray: false
 		})
 		.then(data => {
-			this.setState({ favoriteTournaments: data })
-			fetchCount++;
-			if (fetchCount === 2) this.checkFavoriteTournaments()
-			console.log("MyFavoriteTournaments", data)
+			this.setState({
+				favoriteTournaments: data,
+				fetchCount: this.state.fetchCount+1
+			})
 		})
 		.catch(error => {
 			//handle error
@@ -67,21 +59,19 @@ class ApiTournamentsList extends Component {
 		
 	}
 
-	checkFavoriteTournaments() {
-		console.log(1);
-	}
-
 	render() {
-		if (this.state.apiTournaments.length > 0) {
+		if (this.state.apiTournaments.length > 0 && this.state.fetchCount === 2) {
 			return (
 				<div className="container-fluid">
 					<h3>Todos los torneos</h3>
 					<ListGroup>
 						{this.state.apiTournaments.map((tournament) => {
+							var isFavorite = (this.state.favoriteTournaments[tournament.id] !== undefined)
 							return (
 								<ApiTournamentsListItem 
 									key={"t_" + tournament.id}
-									tournament={tournament} />
+									tournament={tournament}
+									isFavorite={isFavorite} />
 							);
 						})}
 					</ListGroup>
