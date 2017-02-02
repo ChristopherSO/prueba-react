@@ -19,8 +19,7 @@ class ApiTournamentsList extends Component {
 		
 		this.state = {
 			apiTournaments: [],
-			favoriteTournaments: [],
-			fetchCount: 0 // This will be 2 when api-fetch and firebase-fetch are done
+			favoriteTournaments: []
 		};
 	}
 
@@ -37,8 +36,7 @@ class ApiTournamentsList extends Component {
 		})
 		.then((data) => {
 			this.setState({
-				apiTournaments: data,
-				fetchCount: this.state.fetchCount+1
+				apiTournaments: data
 			})
 		})
 
@@ -48,10 +46,11 @@ class ApiTournamentsList extends Component {
 			asArray: false
 		})
 		.then(data => {
-			this.setState({
-				favoriteTournaments: data,
-				fetchCount: this.state.fetchCount+1
-			})
+			if (data != null) {
+				this.setState({
+					favoriteTournaments: data
+				})
+			}
 		})
 		.catch(error => {
 			//handle error
@@ -60,7 +59,7 @@ class ApiTournamentsList extends Component {
 	}
 
 	render() {
-		if (this.state.apiTournaments.length > 0 && this.state.fetchCount === 2) {
+		if (this.state.apiTournaments.length > 0 && this.state.favoriteTournaments.length >= 0) {
 			return (
 				<div className="container-fluid">
 					<h3>Todos los torneos</h3>
