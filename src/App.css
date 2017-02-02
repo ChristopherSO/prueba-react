@@ -33,3 +33,18 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.list-group-item:first-child {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.list-group > div:first-child > .list-group-item {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.panel {
+  margin-bottom: 0;
+  border: 0;
+}

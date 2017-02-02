@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import Panel from 'react-bootstrap/lib/Panel';
 import Rebase from 're-base';
+import ApiMatchesList from './api-matches-list';
 
 
 var base = Rebase.createClass({
@@ -19,13 +21,16 @@ class ApiTournamentsListItem extends Component {
 		
 		this.state = {
 			tournament: props.tournament,
-			checked: props.isFavorite
+			checked: props.isFavorite,
+			panelIsOpen: false,
+			hasThePanelBeenOpened: false // This state prevents the list of matches to be rendered until the panel opnes the first time
 		};
 		
-		this.handleChange = this.handleChange.bind(this);
+		this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
+		//this.handlePanelChange = this.handlePanelChange.bind(this);
 	}
 
-	handleChange() {
+	handleCheckboxChange() {
 		if (!this.state.checked) {
 			this.addFavoriteTournament()
 		} else {
@@ -35,7 +40,14 @@ class ApiTournamentsListItem extends Component {
 		this.setState({
 			checked: !this.state.checked
 		})
-	  }
+	}
+
+	handlePanelChange() {
+		this.setState({
+			panelIsOpen: !this.state.panelIsOpen,
+			hasThePanelBeenOpened: true
+		})
+	}
 
 	addFavoriteTournament() {
 		// Using re-base to push favorite tournament to Firebase
@@ -58,19 +70,24 @@ class ApiTournamentsListItem extends Component {
 
 	render() {
 		return (
-			<ListGroupItem>
-				<span>{this.state.tournament.caption}</span>
-				<a 
-					style={{float:'right'}}
-					href="">
-					<Glyphicon glyph="chevron-up" />
-				</a>
-				<input 
-					style={{float:'right', marginRight: '15px'}}
-					type="checkbox"
-					checked={ this.state.checked } 
-					onChange={ this.handleChange } />
-			</ListGroupItem>
+			<div>
+				<ListGroupItem>				
+					<span>{this.state.tournament.caption}</span>
+					<a 
+						style={{float:'right'}}
+						onClick={ () => this.handlePanelChange()}>
+						<Glyphicon glyph={this.state.panelIsOpen ? "chevron-down" : "chevron-up"} />
+					</a>
+					<input 
+						style={{float:'right', marginRight: '15px'}}
+						type="checkbox"
+						checked={ this.state.checked } 
+						onChange={ this.handleCheckboxChange } />
+				</ListGroupItem>
+				<Panel collapsible expanded={this.state.panelIsOpen}>
+					{ this.state.hasThePanelBeenOpened ? <ApiMatchesList tournament={this.state.tournament} /> : ""}
+				</Panel>
+			</div>
 		);
 	}
 

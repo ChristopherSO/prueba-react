@@ -1,33 +1,12 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Firebase from 'firebase';
-import FavoriteTournamentsList from './favorite-tournaments-list';
+//import FavoriteTournamentsList from './favorite-tournaments-list';
 import ApiTournamentsList from './api-tournaments-list'
 
 class App extends Component {
 
-	constructor(props) {
-		super(props);
-		// Initial state
-		this.state = {
-			speed: 10
-		};
-	}
-
-	componentWillMount() {
-		const rootRef = Firebase.database().ref();
-		const speedRef = rootRef.child('text');
-		speedRef.on('value', snap => {
-			// Firebase state
-			this.setState({
-				speed: snap.val()
-			});
-		});
-	}
-
 	render() {
-		console.log("this.state", this.state);
 		return (
 			<div className="App">
 
@@ -43,7 +22,6 @@ class App extends Component {
 					<div className="col-md-8 col-md-offset-2">
 						<h2 className="text-center">Torneos & partidos</h2>
 						<ApiTournamentsList />
-						<FavoriteTournamentsList tournaments={this.state.tournaments} />
 					</div>
 				</div>
 

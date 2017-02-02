@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ListGroup from 'react-bootstrap/lib/ListGroup';
-import ApiTournamentsListItem from './api-tournaments-list-item';
+//import ApiMatchesListItem from './api-tournaments-list-item';
 import Rebase from 're-base';
 
 
@@ -12,22 +12,22 @@ var base = Rebase.createClass({
 	messagingSenderId: "984037448459"
 });
 
-class ApiTournamentsList extends Component {
+class ApiMatchesList extends Component {
 
 	constructor(props) {
 		super(props);
 		
 		this.state = {
-			apiTournaments: [],
-			favoriteTournaments: [],
+			apiMatches: [],
+			featuredMatches: [],
 			fetchCount: 0 // This will be 2 when api-fetch and firebase-fetch are done
 		};
 	}
 
 	componentWillMount() {
 
-		// Get the tournaments from the API
-		fetch('http://api.football-data.org/v1/competitions', { 
+		// Get the matches from the API
+		fetch('http://api.football-data.org/v1/competitions/'+this.props.tournament.id+'/fixtures', { 
 			headers: {
 				'X-Auth-Token': 'df7efca274f64ed1adc8e8cfed3541c5'
 			}
@@ -36,20 +36,21 @@ class ApiTournamentsList extends Component {
 			return response.json()
 		})
 		.then((data) => {
+			console.log("data.fixtures", data.fixtures);
 			this.setState({
-				apiTournaments: data,
+				apiMatches: data.fixtures,
 				fetchCount: this.state.fetchCount+1
 			})
 		})
 
-		// Get my favorite tournaments from Firebase
-		base.fetch('favoriteTournaments', {
+		// Get my featured matches from Firebase
+		base.fetch('featuredMatches', {
 			context: this,
 			asArray: false
 		})
 		.then(data => {
 			this.setState({
-				favoriteTournaments: data,
+				featuredMatches: data,
 				fetchCount: this.state.fetchCount+1
 			})
 		})
@@ -60,27 +61,26 @@ class ApiTournamentsList extends Component {
 	}
 
 	render() {
-		if (this.state.apiTournaments.length > 0 && this.state.fetchCount === 2) {
+		if (this.state.apiMatches.length > 0 /* && this.state.fetchCount === 2 */) {
 			return (
 				<div className="container-fluid">
-					<h3>Todos los torneos</h3>
 					<ListGroup>
-						{this.state.apiTournaments.map((tournament) => {
-							var isFavorite = (this.state.favoriteTournaments[tournament.id] !== undefined)
-							return (
-								<ApiTournamentsListItem 
-									key={"t_" + tournament.id}
-									tournament={tournament}
+						{this.state.apiMatches.map((match) => {
+							//var isFavorite = (this.state.featuredMatches[match.id] !== undefined)
+							return "Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident."; /*(
+								<ApiMatchesListItem 
+									key={"t_" + match.id}
+									match={match}
 									isFavorite={isFavorite} />
-							);
+							);*/
 						})}
 					</ListGroup>
 				</div>
 			)
 		} else {
-			return <p className="text-center">Cargando torneos...</p>
+			return <p className="text-center">Cargando partidos...</p>
 		}
 	}
 }
 
-export default ApiTournamentsList;
+export default ApiMatchesList;
