@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ListGroup from 'react-bootstrap/lib/ListGroup';
-import ApiMatchesListItem from './api-tournaments-list-item';
+import ApiMatchesListItem from './api-matches-list-item';
 import Rebase from 're-base';
 
 
@@ -59,7 +59,6 @@ class ApiMatchesList extends Component {
 		if (this.state.apiMatches.length > 0 && this.state.featuredMatches.length >= 0) {
 			return (
 				<div className="container-fluid">
-					<h3>Partidos de un torneo</h3>
 					<ListGroup>
 						{this.state.apiMatches.map((match, index) => {
 							var matchId = this.props.tournamentId + "_" + index;

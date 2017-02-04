@@ -18,8 +18,6 @@ class ApiTournamentsListItem extends Component {
 
 	constructor(props) {
 		super(props);
-
-		this.tournament = props.tournament;
 		
 		this.state = {
 			checked: props.isFavorite,
@@ -45,7 +43,6 @@ class ApiTournamentsListItem extends Component {
 	}
 
 	handlePanelChange() {
-		console.log("handlePanelChange");
 		this.setState({
 			panelIsOpen: !this.state.panelIsOpen,
 			hasThePanelBeenOpened: true
@@ -54,18 +51,18 @@ class ApiTournamentsListItem extends Component {
 
 	addFavoriteTournament() {
 		// Using re-base to push favorite tournament to Firebase
-		base.post('favoriteTournaments/'+this.tournament.id, {
-			data: this.tournament
+		base.post('favoriteTournaments/'+this.props.tournament.id, {
+			data: this.props.tournament
 		}).then(() => {
-			console.log("added:", this.tournament.caption);
+			console.log("added:", this.props.tournament.caption);
 		}).catch(err => {
 			//handle error
 		});
 	}
 
 	removeFavoriteTournament() {
-		base.remove('favoriteTournaments/'+this.tournament.id).then(() => {
-			console.log("removed:", this.tournament.caption);
+		base.remove('favoriteTournaments/'+this.props.tournament.id).then(() => {
+			console.log("removed:", this.props.tournament.caption);
 		}).catch(error => {
 			//handle error
 		});
@@ -74,8 +71,8 @@ class ApiTournamentsListItem extends Component {
 	render() {
 		return (
 			<div>
-				<ListGroupItem>				
-					<span>{this.tournament.caption}</span>
+				<ListGroupItem>
+					<span>{this.props.tournament.caption}</span>
 					<a 
 						style={{float:'right'}}
 						onClick={ () => this.handlePanelChange()}>
@@ -88,7 +85,7 @@ class ApiTournamentsListItem extends Component {
 						onChange={ this.handleCheckboxChange } />
 				</ListGroupItem>
 				<Panel collapsible expanded={this.state.panelIsOpen}>
-					{ this.state.hasThePanelBeenOpened ? <ApiMatchesList tournamentId={this.tournament.id} /> : ""}
+					{ this.state.hasThePanelBeenOpened ? <ApiMatchesList tournamentId={this.props.tournament.id} /> : ""}
 				</Panel>
 			</div>
 		);

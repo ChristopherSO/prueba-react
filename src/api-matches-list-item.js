@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import ListGroupItem from 'react-bootstrap/lib/ListGroupItem';
-import Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import Panel from 'react-bootstrap/lib/Panel';
 import Rebase from 're-base';
-import ApiMatchesList from './api-matches-list';
 
 
 var base = Rebase.createClass({
@@ -27,7 +24,6 @@ class ApiMatchesListItem extends Component {
 		};
 		
 		this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
-		this.handlePanelChange = this.handlePanelChange.bind(this);
 	}
 
 	handleCheckboxChange() {
