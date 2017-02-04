@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ListGroupItem from 'react-bootstrap/lib/ListGroupItem';
 import Rebase from 're-base';
 
 
@@ -17,9 +16,6 @@ class ApiMatchesListItem extends Component {
 		super(props);
 		
 		this.state = {
-			match: props.match,
-			matchId: props.matchId,
-			matchIndex: props.matchIndex,
 			checked: props.isFavorite
 		};
 		
@@ -40,18 +36,18 @@ class ApiMatchesListItem extends Component {
 
 	addFeaturedMatch() {
 		// Using re-base to push favorite match to Firebase
-		base.post('featuredMatches/'+this.state.matchId, {
-			data: this.state.match
+		base.post('featuredMatches/'+this.props.matchId, {
+			data: this.props.match
 		}).then(() => {
-			console.log("added:", this.state.match.homeTeamName + " vs. " + this.state.match.awayTeamName);
+			console.log("added:", this.props.match.homeTeamName + " vs. " + this.props.match.awayTeamName);
 		}).catch(err => {
 			//handle error
 		});
 	}
 
 	removeFeaturedMatch() {
-		base.remove('featuredMatches/'+this.state.matchId).then(() => {
-			console.log("removed:", this.state.match.homeTeamName + " vs. " + this.state.match.awayTeamName);
+		base.remove('featuredMatches/'+this.props.matchId).then(() => {
+			console.log("removed:", this.props.match.homeTeamName + " vs. " + this.props.match.awayTeamName);
 		}).catch(error => {
 			//handle error
 		});
@@ -59,14 +55,18 @@ class ApiMatchesListItem extends Component {
 
 	render() {
 		return (
-			<ListGroupItem>				
-				<span>{this.state.match.homeTeamName + " vs. " + this.state.match.awayTeamName}</span>
-				<input 
-					style={{float:'right', marginRight: '15px'}}
-					type="checkbox"
-					checked={ this.state.checked } 
-					onChange={ this.handleCheckboxChange } />
-			</ListGroupItem>
+			<tr>
+				<td>{this.props.match.homeTeamName}</td>
+				<td>vs.</td>
+				<td>{this.props.match.awayTeamName}</td>
+				<td>
+					<input 
+						type="checkbox"
+						style={{float:'right', marginRight: '15px'}}
+						checked={ this.state.checked } 
+						onChange={ this.handleCheckboxChange } />
+				</td>
+			</tr>
 		);
 	}
 

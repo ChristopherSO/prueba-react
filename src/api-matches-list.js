@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ListGroup from 'react-bootstrap/lib/ListGroup';
+import Table from 'react-bootstrap/lib/Table';
 import ApiMatchesListItem from './api-matches-list-item';
 import Rebase from 're-base';
 
@@ -58,21 +58,22 @@ class ApiMatchesList extends Component {
 	render() {
 		if (this.state.apiMatches.length > 0 && this.state.featuredMatches.length >= 0) {
 			return (
-				<div className="container-fluid">
-					<ListGroup>
-						{this.state.apiMatches.map((match, index) => {
-							var matchId = this.props.tournamentId + "_" + index;
-							var isFeatured = (this.state.featuredMatches[matchId] !== undefined);
-							return (
-								<ApiMatchesListItem 
-									key={"m_" + matchId}
-									match={match}
-									matchId={matchId}
-									matchIndex={index}
-									isFeatured={isFeatured} />
-							);
-						})}
-					</ListGroup>
+				<div>
+					<Table striped condensed hover>
+						<tbody>
+							{this.state.apiMatches.map((match, index) => {
+								var matchId = this.props.tournamentId + "_" + index;
+								var isFeatured = (this.state.featuredMatches[matchId] !== undefined);
+								return (
+									<ApiMatchesListItem 
+										key={"m_" + matchId}
+										match={match}
+										matchId={matchId}
+										isFeatured={isFeatured} />
+								);
+							})}
+						</tbody>
+					</Table>
 				</div>
 			)
 		} else {

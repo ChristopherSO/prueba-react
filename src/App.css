@@ -44,7 +44,22 @@
   border-top-right-radius: 4px;
 }
 
+
+/* Matches style */
+
 .panel {
   margin-bottom: 0;
   border: 0;
+}
+
+.panel-body {
+    padding: 0;
+}
+
+td:first-child {
+  text-align: right;
+}
+
+td:nth-child(2) {
+  text-align: center;
 }
