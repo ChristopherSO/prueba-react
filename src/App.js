@@ -19,7 +19,7 @@ class App extends Component {
 				</div>
 
 				<div className="row panel panel-default">
-					<div className="col-md-8 col-md-offset-2">
+					<div className="col-md-6 col-md-offset-3">
 						<h2 className="text-center">Torneos & partidos</h2>
 						<ApiTournamentsList />
 					</div>

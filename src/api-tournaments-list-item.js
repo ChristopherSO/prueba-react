@@ -18,16 +18,18 @@ class ApiTournamentsListItem extends Component {
 
 	constructor(props) {
 		super(props);
+
+		this.tournament = props.tournament;
 		
 		this.state = {
-			tournament: props.tournament,
 			checked: props.isFavorite,
 			panelIsOpen: false,
-			hasThePanelBeenOpened: false // This state prevents the list of matches to be rendered until the panel opnes the first time
+			hasThePanelBeenOpened: false // This state prevents the list of matches to be rendered until the panel opens the first time
 		};
 		
 		this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
-		//this.handlePanelChange = this.handlePanelChange.bind(this);
+		this.handlePanelChange = this.handlePanelChange.bind(this);
+		this.addFavoriteTournament = this.addFavoriteTournament.bind(this);
 	}
 
 	handleCheckboxChange() {
@@ -43,6 +45,7 @@ class ApiTournamentsListItem extends Component {
 	}
 
 	handlePanelChange() {
+		console.log("handlePanelChange");
 		this.setState({
 			panelIsOpen: !this.state.panelIsOpen,
 			hasThePanelBeenOpened: true
@@ -51,18 +54,18 @@ class ApiTournamentsListItem extends Component {
 
 	addFavoriteTournament() {
 		// Using re-base to push favorite tournament to Firebase
-		base.post('favoriteTournaments/'+this.state.tournament.id, {
-			data: this.state.tournament
+		base.post('favoriteTournaments/'+this.tournament.id, {
+			data: this.tournament
 		}).then(() => {
-			console.log("added:", this.state.tournament.caption);
+			console.log("added:", this.tournament.caption);
 		}).catch(err => {
 			//handle error
 		});
 	}
 
 	removeFavoriteTournament() {
-		base.remove('favoriteTournaments/'+this.state.tournament.id).then(() => {
-			console.log("removed:", this.state.tournament.caption);
+		base.remove('favoriteTournaments/'+this.tournament.id).then(() => {
+			console.log("removed:", this.tournament.caption);
 		}).catch(error => {
 			//handle error
 		});
@@ -72,7 +75,7 @@ class ApiTournamentsListItem extends Component {
 		return (
 			<div>
 				<ListGroupItem>				
-					<span>{this.state.tournament.caption}</span>
+					<span>{this.tournament.caption}</span>
 					<a 
 						style={{float:'right'}}
 						onClick={ () => this.handlePanelChange()}>
@@ -85,7 +88,7 @@ class ApiTournamentsListItem extends Component {
 						onChange={ this.handleCheckboxChange } />
 				</ListGroupItem>
 				<Panel collapsible expanded={this.state.panelIsOpen}>
-					{ this.state.hasThePanelBeenOpened ? <ApiMatchesList tournament={this.state.tournament} /> : ""}
+					{ this.state.hasThePanelBeenOpened ? <ApiMatchesList tournamentId={this.tournament.id} /> : ""}
 				</Panel>
 			</div>
 		);

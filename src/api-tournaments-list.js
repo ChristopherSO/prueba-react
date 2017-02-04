@@ -21,9 +21,6 @@ class ApiTournamentsList extends Component {
 			apiTournaments: [],
 			favoriteTournaments: []
 		};
-	}
-
-	componentWillMount() {
 
 		// Get the tournaments from the API
 		fetch('http://api.football-data.org/v1/competitions', { 
@@ -55,7 +52,6 @@ class ApiTournamentsList extends Component {
 		.catch(error => {
 			//handle error
 		})
-		
 	}
 
 	render() {

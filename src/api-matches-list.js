@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ListGroup from 'react-bootstrap/lib/ListGroup';
-//import ApiMatchesListItem from './api-tournaments-list-item';
+import ApiMatchesListItem from './api-tournaments-list-item';
 import Rebase from 're-base';
 
 
@@ -19,15 +19,11 @@ class ApiMatchesList extends Component {
 		
 		this.state = {
 			apiMatches: [],
-			featuredMatches: [],
-			fetchCount: 0 // This will be 2 when api-fetch and firebase-fetch are done
+			featuredMatches: []
 		};
-	}
-
-	componentWillMount() {
 
 		// Get the matches from the API
-		fetch('http://api.football-data.org/v1/competitions/'+this.props.tournament.id+'/fixtures', { 
+		fetch('http://api.football-data.org/v1/competitions/'+this.props.tournamentId+'/fixtures', { 
 			headers: {
 				'X-Auth-Token': 'df7efca274f64ed1adc8e8cfed3541c5'
 			}
@@ -36,10 +32,8 @@ class ApiMatchesList extends Component {
 			return response.json()
 		})
 		.then((data) => {
-			console.log("data.fixtures", data.fixtures);
 			this.setState({
-				apiMatches: data.fixtures,
-				fetchCount: this.state.fetchCount+1
+				apiMatches: data.fixtures
 			})
 		})
 
@@ -49,10 +43,11 @@ class ApiMatchesList extends Component {
 			asArray: false
 		})
 		.then(data => {
-			this.setState({
-				featuredMatches: data,
-				fetchCount: this.state.fetchCount+1
-			})
+			if (data != null) {
+				this.setState({
+					featuredMatches: data
+				})
+			}
 		})
 		.catch(error => {
 			//handle error
@@ -61,18 +56,22 @@ class ApiMatchesList extends Component {
 	}
 
 	render() {
-		if (this.state.apiMatches.length > 0 /* && this.state.fetchCount === 2 */) {
+		if (this.state.apiMatches.length > 0 && this.state.featuredMatches.length >= 0) {
 			return (
 				<div className="container-fluid">
+					<h3>Partidos de un torneo</h3>
 					<ListGroup>
-						{this.state.apiMatches.map((match) => {
-							//var isFavorite = (this.state.featuredMatches[match.id] !== undefined)
-							return "Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident."; /*(
+						{this.state.apiMatches.map((match, index) => {
+							var matchId = this.props.tournamentId + "_" + index;
+							var isFeatured = (this.state.featuredMatches[matchId] !== undefined);
+							return (
 								<ApiMatchesListItem 
-									key={"t_" + match.id}
+									key={"m_" + matchId}
 									match={match}
-									isFavorite={isFavorite} />
-							);*/
+									matchId={matchId}
+									matchIndex={index}
+									isFeatured={isFeatured} />
+							);
 						})}
 					</ListGroup>
 				</div>
