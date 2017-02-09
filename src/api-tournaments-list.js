@@ -19,7 +19,8 @@ class ApiTournamentsList extends Component {
 		
 		this.state = {
 			apiTournaments: [],
-			favoriteTournaments: []
+			favoriteTournaments: {},
+			firebaseFetchDone: false
 		};
 
 		// Get the tournaments from the API
@@ -40,7 +41,7 @@ class ApiTournamentsList extends Component {
 		// Get my favorite tournaments from Firebase
 		base.fetch('favoriteTournaments', {
 			context: this,
-			asArray: false
+			asArray: false // In this case false makes it easy to get items by id.
 		})
 		.then(data => {
 			if (data != null) {
@@ -48,6 +49,9 @@ class ApiTournamentsList extends Component {
 					favoriteTournaments: data
 				})
 			}
+			this.setState({
+				firebaseFetchDone: true
+			})
 		})
 		.catch(error => {
 			//handle error
@@ -55,10 +59,15 @@ class ApiTournamentsList extends Component {
 	}
 
 	render() {
-		if (this.state.apiTournaments.length > 0 && this.state.favoriteTournaments.length >= 0) {
+		/*
+		* Note: cannot use the check 'this.state.favoriteTournaments>=0' because the 
+		* data doesn't come as array which is needed (base.fetch -> asArray: false).
+		* That's why the state 'firebaseFetchDone' is needed.
+		*/
+		if (this.state.apiTournaments.length > 0 && this.state.firebaseFetchDone) {
 			return (
 				<div className="container-fluid">
-					<h3>Todos los torneos</h3>
+					<h3 className="text-center">Todos los torneos</h3>
 					<ListGroup>
 						{this.state.apiTournaments.map((tournament) => {
 							var isFavorite = (this.state.favoriteTournaments[tournament.id] !== undefined)
@@ -73,7 +82,11 @@ class ApiTournamentsList extends Component {
 				</div>
 			)
 		} else {
-			return <p className="text-center">Cargando torneos...</p>
+			return (
+				<div className="container-fluid">
+					<p className="text-center">Cargando torneos...</p>
+				</div>
+			);
 		}
 	}
 }

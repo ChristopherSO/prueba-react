@@ -12,36 +12,19 @@ var base = Rebase.createClass({
 	messagingSenderId: "984037448459"
 });
 
-class ApiMatchesList extends Component {
+class FeaturedMatchesList extends Component {
 
 	constructor(props) {
 		super(props);
 		
 		this.state = {
-			apiMatches: [],
-			featuredMatches: [],
-			firebaseFetchDone: false
+			featuredMatches: []
 		};
-
-		// Get the matches from the API
-		fetch('http://api.football-data.org/v1/competitions/'+this.props.tournamentId+'/fixtures', { 
-			headers: {
-				'X-Auth-Token': 'df7efca274f64ed1adc8e8cfed3541c5'
-			}
-		})
-		.then((response) => {
-			return response.json()
-		})
-		.then((data) => {
-			this.setState({
-				apiMatches: data.fixtures
-			})
-		})
 
 		// Get my featured matches from Firebase
 		base.fetch('featuredMatches', {
 			context: this,
-			asArray: false
+			asArray: true
 		})
 		.then(data => {
 			if (data != null) {
@@ -49,9 +32,6 @@ class ApiMatchesList extends Component {
 					featuredMatches: data
 				})
 			}
-			this.setState({
-				firebaseFetchDone: true
-			})
 		})
 		.catch(error => {
 			//handle error
@@ -60,20 +40,19 @@ class ApiMatchesList extends Component {
 	}
 
 	render() {
-		if (this.state.apiMatches.length > 0 && this.state.firebaseFetchDone) {
+		if (this.state.featuredMatches.length >= 0) {
 			return (
 				<div>
 					<Table striped condensed hover>
 						<tbody>
-							{this.state.apiMatches.map((match, index) => {
+							{this.state.featuredMatches.map((match, index) => {
 								var matchId = this.props.tournamentId + "_" + index;
-								var isFeatured = (this.state.featuredMatches[matchId] !== undefined);
 								return (
 									<ApiMatchesListItem 
 										key={"m_" + matchId}
 										match={match}
 										matchId={matchId}
-										isFeatured={isFeatured} />
+										isFeatured={true} />
 								);
 							})}
 						</tbody>
@@ -81,9 +60,9 @@ class ApiMatchesList extends Component {
 				</div>
 			)
 		} else {
-			return <p className="text-center">Cargando partidos...</p>
+			return <p className="text-center">Cargando partidos destacados...</p>
 		}
 	}
 }
 
-export default ApiMatchesList;
+export default FeaturedMatchesList;

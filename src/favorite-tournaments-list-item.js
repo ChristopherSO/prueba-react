@@ -3,7 +3,7 @@ import ListGroupItem from 'react-bootstrap/lib/ListGroupItem';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import Panel from 'react-bootstrap/lib/Panel';
 import Rebase from 're-base';
-import ApiMatchesList from './api-matches-list';
+import FeaturedMatchesList from './featured-matches-list';
 
 
 var base = Rebase.createClass({
@@ -14,7 +14,7 @@ var base = Rebase.createClass({
 	messagingSenderId: "984037448459"
 });
 
-class ApiTournamentsListItem extends Component {
+class FavoriteTournamentsListItem extends Component {
 
 	constructor(props) {
 		super(props);
@@ -27,6 +27,7 @@ class ApiTournamentsListItem extends Component {
 		
 		this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
 		this.handlePanelChange = this.handlePanelChange.bind(this);
+		this.addFavoriteTournament = this.addFavoriteTournament.bind(this);
 	}
 
 	handleCheckboxChange() {
@@ -79,13 +80,13 @@ class ApiTournamentsListItem extends Component {
 						<Glyphicon glyph={this.state.panelIsOpen ? "chevron-down" : "chevron-up"} />
 					</a>
 					<input 
-						type="checkbox"
 						style={{float:'right', marginRight: '15px'}}
+						type="checkbox"
 						checked={ this.state.checked } 
 						onChange={ this.handleCheckboxChange } />
 				</ListGroupItem>
 				<Panel collapsible expanded={this.state.panelIsOpen}>
-					{ this.state.hasThePanelBeenOpened ? <ApiMatchesList tournamentId={this.props.tournament.id} /> : ""}
+					{ this.state.hasThePanelBeenOpened ? <FeaturedMatchesList tournamentId={this.props.tournament.id} /> : ""}
 				</Panel>
 			</div>
 		);
@@ -93,4 +94,4 @@ class ApiTournamentsListItem extends Component {
 
 }
 
-export default ApiTournamentsListItem;
+export default FavoriteTournamentsListItem;

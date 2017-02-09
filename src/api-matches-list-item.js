@@ -16,7 +16,7 @@ class ApiMatchesListItem extends Component {
 		super(props);
 		
 		this.state = {
-			checked: props.isFavorite
+			checked: props.isFeatured
 		};
 		
 		this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
