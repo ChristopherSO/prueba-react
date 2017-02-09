@@ -42,7 +42,6 @@ class ApiTournamentsListItem extends Component {
 	}
 
 	handlePanelChange() {
-		console.log("handlePanelChange");
 		this.setState({
 			panelIsOpen: !this.state.panelIsOpen,
 			hasThePanelBeenOpened: true

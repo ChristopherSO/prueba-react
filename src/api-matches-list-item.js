@@ -36,7 +36,7 @@ class ApiMatchesListItem extends Component {
 
 	addFeaturedMatch() {
 		// Using re-base to push favorite match to Firebase
-		base.post('featuredMatches/'+this.props.matchId, {
+		base.post('featuredMatches/'+this.props.tournamentId+'/'+this.props.matchIndex, {
 			data: this.props.match
 		}).then(() => {
 			console.log("added:", this.props.match.homeTeamName + " vs. " + this.props.match.awayTeamName);
@@ -46,7 +46,7 @@ class ApiMatchesListItem extends Component {
 	}
 
 	removeFeaturedMatch() {
-		base.remove('featuredMatches/'+this.props.matchId).then(() => {
+		base.remove('featuredMatches/'+this.props.tournamentId+'/'+this.props.matchIndex).then(() => {
 			console.log("removed:", this.props.match.homeTeamName + " vs. " + this.props.match.awayTeamName);
 		}).catch(error => {
 			//handle error

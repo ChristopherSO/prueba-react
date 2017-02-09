@@ -19,7 +19,7 @@ class ApiMatchesList extends Component {
 		
 		this.state = {
 			apiMatches: [],
-			featuredMatches: [],
+			featuredMatches: {},
 			firebaseFetchDone: false
 		};
 
@@ -46,7 +46,7 @@ class ApiMatchesList extends Component {
 		.then(data => {
 			if (data != null) {
 				this.setState({
-					featuredMatches: data
+					featuredMatches: data[this.props.tournamentId] || {} // If there are no matches under the indicated tournamentId, give an empty object.
 				})
 			}
 			this.setState({
@@ -66,13 +66,13 @@ class ApiMatchesList extends Component {
 					<Table striped condensed hover>
 						<tbody>
 							{this.state.apiMatches.map((match, index) => {
-								var matchId = this.props.tournamentId + "_" + index;
-								var isFeatured = (this.state.featuredMatches[matchId] !== undefined);
+								var isFeatured = (this.state.featuredMatches[index] !== undefined);
 								return (
 									<ApiMatchesListItem 
-										key={"m_" + matchId}
+										key={"m_" + this.props.tournamentId + "_" + index}
+										tournamentId={this.props.tournamentId}
 										match={match}
-										matchId={matchId}
+										matchIndex={index}
 										isFeatured={isFeatured} />
 								);
 							})}
