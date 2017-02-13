@@ -70,7 +70,9 @@ class ApiTournamentsList extends Component {
 					<h3 className="text-center">Todos los torneos</h3>
 					<ListGroup>
 						{this.state.apiTournaments.map((tournament) => {
-							var isFavorite = (this.state.favoriteTournaments[tournament.id] !== undefined)
+							var isFavorite = (this.state.favoriteTournaments[tournament.id] !== undefined) ? 
+								this.state.favoriteTournaments[tournament.id].isFavorite : 
+								false
 							return (
 								<ApiTournamentsListItem 
 									key={"t_" + tournament.id}

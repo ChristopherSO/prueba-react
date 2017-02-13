@@ -10,7 +10,7 @@ var base = Rebase.createClass({
 	messagingSenderId: "984037448459"
 });
 
-class ApiMatchesListItem extends Component {
+class FeaturedMatchesListItem extends Component {
 
 	constructor(props) {
 		super(props);
@@ -36,33 +36,17 @@ class ApiMatchesListItem extends Component {
 
 	addFeaturedMatch() {
 		// Using re-base to push favorite match to Firebase
-		base.post('featuredMatches/'+this.props.tournament.id+'/'+this.props.matchIndex, {
+		base.post('featuredMatches/'+this.props.tournamentId+'/'+this.props.matchIndex, {
 			data: this.props.match
 		}).then(() => {
 			console.log("added:", this.props.match.homeTeamName + " vs. " + this.props.match.awayTeamName);
 		}).catch(err => {
 			//handle error
 		});
-
-		if (!this.props.tournament.hasOwnProperty('isFavorite')) {
-			this.addTournament()
-		}
-	}
-
-	addTournament() {
-		this.props.tournament.isFavorite = false;
-		// Using re-base to push favorite tournament to Firebase
-		base.post('favoriteTournaments/'+this.props.tournament.id, {
-			data: this.props.tournament
-		}).then(() => {
-			console.log("added:", this.props.tournament.caption);
-		}).catch(err => {
-			//handle error
-		});
 	}
 
 	removeFeaturedMatch() {
-		base.remove('featuredMatches/'+this.props.tournament.id+'/'+this.props.matchIndex).then(() => {
+		base.remove('featuredMatches/'+this.props.tournamentId+'/'+this.props.matchIndex).then(() => {
 			console.log("removed:", this.props.match.homeTeamName + " vs. " + this.props.match.awayTeamName);
 		}).catch(error => {
 			//handle error
@@ -88,4 +72,4 @@ class ApiMatchesListItem extends Component {
 
 }
 
-export default ApiMatchesListItem;
+export default FeaturedMatchesListItem;

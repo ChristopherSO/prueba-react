@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Table from 'react-bootstrap/lib/Table';
-import ApiMatchesListItem from './api-matches-list-item';
+import FeaturedMatchesListItem from './featured-matches-list-item';
 import Rebase from 're-base';
 
 
@@ -18,11 +18,11 @@ class FeaturedMatchesList extends Component {
 		super(props);
 		
 		this.state = {
-			featuredMatches: []
+			featuredMatches: {}
 		};
 
 		// Get my featured matches from Firebase
-		base.fetch('featuredMatches', {
+		base.fetch('featuredMatches/'+this.props.tournamentId, {
 			context: this,
 			asArray: true
 		})
@@ -40,18 +40,19 @@ class FeaturedMatchesList extends Component {
 	}
 
 	render() {
+		console.log("featuredMatches", this.state.featuredMatches);
 		if (this.state.featuredMatches.length >= 0) {
 			return (
 				<div>
 					<Table striped condensed hover>
 						<tbody>
 							{this.state.featuredMatches.map((match, index) => {
-								var matchId = this.props.tournamentId + "_" + index;
 								return (
-									<ApiMatchesListItem 
-										key={"m_" + matchId}
+									<FeaturedMatchesListItem 
+										key={"m_" + this.props.tournamentId + "_" + index}
+										tournamentId={this.props.tournamentId}
 										match={match}
-										matchId={matchId}
+										matchIndex={index}
 										isFeatured={true} />
 								);
 							})}

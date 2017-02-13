@@ -20,14 +20,13 @@ class FavoriteTournamentsListItem extends Component {
 		super(props);
 		
 		this.state = {
-			checked: props.isFavorite,
+			checked: props.tournament.isFavorite,
 			panelIsOpen: false,
 			hasThePanelBeenOpened: false // This state prevents the list of matches to be rendered until the panel opens the first time
 		};
 		
 		this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
 		this.handlePanelChange = this.handlePanelChange.bind(this);
-		this.addFavoriteTournament = this.addFavoriteTournament.bind(this);
 	}
 
 	handleCheckboxChange() {

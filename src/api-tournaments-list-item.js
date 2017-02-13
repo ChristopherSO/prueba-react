@@ -49,6 +49,7 @@ class ApiTournamentsListItem extends Component {
 	}
 
 	addFavoriteTournament() {
+		this.props.tournament.isFavorite = true;
 		// Using re-base to push favorite tournament to Firebase
 		base.post('favoriteTournaments/'+this.props.tournament.id, {
 			data: this.props.tournament
@@ -84,7 +85,7 @@ class ApiTournamentsListItem extends Component {
 						onChange={ this.handleCheckboxChange } />
 				</ListGroupItem>
 				<Panel collapsible expanded={this.state.panelIsOpen}>
-					{ this.state.hasThePanelBeenOpened ? <ApiMatchesList tournamentId={this.props.tournament.id} /> : ""}
+					{ this.state.hasThePanelBeenOpened ? <ApiMatchesList tournament={this.props.tournament} /> : ""}
 				</Panel>
 			</div>
 		);

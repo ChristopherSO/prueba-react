@@ -24,7 +24,7 @@ class ApiMatchesList extends Component {
 		};
 
 		// Get the matches from the API
-		fetch('http://api.football-data.org/v1/competitions/'+this.props.tournamentId+'/fixtures', { 
+		fetch('http://api.football-data.org/v1/competitions/'+this.props.tournament.id+'/fixtures', { 
 			headers: {
 				'X-Auth-Token': 'df7efca274f64ed1adc8e8cfed3541c5'
 			}
@@ -46,7 +46,7 @@ class ApiMatchesList extends Component {
 		.then(data => {
 			if (data != null) {
 				this.setState({
-					featuredMatches: data[this.props.tournamentId] || {} // If there are no matches under the indicated tournamentId, give an empty object.
+					featuredMatches: data[this.props.tournament.id] || {} // If there are no matches under the indicated tournament id, give an empty object.
 				})
 			}
 			this.setState({
@@ -69,8 +69,8 @@ class ApiMatchesList extends Component {
 								var isFeatured = (this.state.featuredMatches[index] !== undefined);
 								return (
 									<ApiMatchesListItem 
-										key={"m_" + this.props.tournamentId + "_" + index}
-										tournamentId={this.props.tournamentId}
+										key={"m_" + this.props.tournament.id + "_" + index}
+										tournament={this.props.tournament}
 										match={match}
 										matchIndex={index}
 										isFeatured={isFeatured} />

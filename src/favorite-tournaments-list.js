@@ -39,6 +39,7 @@ class FavoriteTournamentsList extends Component {
 	}
 
 	render() {
+		console.log("this.state.favoriteTournaments", this.state.favoriteTournaments);
 		if (this.state.favoriteTournaments.length >= 0) {
 			return (
 				<div className="container-fluid">
@@ -48,8 +49,7 @@ class FavoriteTournamentsList extends Component {
 							return (
 								<FavoriteTournamentsListItem 
 									key={"t_" + tournament.id}
-									tournament={tournament}
-									isFavorite={true} />
+									tournament={tournament} />
 							);
 						})}
 					</ListGroup>
